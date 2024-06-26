@@ -2,6 +2,8 @@
 toc: false
 ---
 
+<script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
+
 <style>
 
 .hero {
@@ -44,6 +46,12 @@ toc: false
 
 </style>
 
+```js
+barba.init({
+    // ...
+  })
+```
+<div id="barba-wrapper">..</div>
 <div class="hero">
   <h1>Hello, Observable Framework</h1>
   <h2>Welcome to your new project! Edit&nbsp;<code style="font-size: 90%;">docs/index.md</code> to change this page.</h2>
@@ -80,8 +88,8 @@ toc: false
 </div>
 
 ```js
-const aapl = FileAttachment("aapl.csv").csv({typed: true});
-const penguins = FileAttachment("penguins.csv").csv({typed: true});
+const aapl = FileAttachment("aapl.csv").csv({ typed: true });
+const penguins = FileAttachment("penguins.csv").csv({ typed: true });
 ```
 
 ---

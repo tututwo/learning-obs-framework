@@ -88,9 +88,9 @@ const point = view(
       context.canvas.onmousemove(event);
     };
 
-    context.canvas.onmousemove = ({ layerX, layerY }) => {
+    context.canvas.onmousemove = ({ offsetX, offsetY }) => {
       if (!mousedown) return;
-      render(projection.invert([layerX, layerY]));
+      render(projection.invert([offsetX, offsetY]));
       context.canvas.dispatchEvent(new CustomEvent("input"));
     };
 
@@ -104,11 +104,9 @@ const point = view(
 );
 ```
 
-```js
-point;
-```
+${point}
 
-A view could be a blank canvas for the user to draw a squiggle:`
+A view could be a blank canvas for the user to draw a squiggle:
 
 ```js
 const stroke = view(
@@ -337,7 +335,7 @@ const stroke = view(
     canvas.ontouchmove = canvas.onmousemove = (event) => {
       if (stroke === null) return;
       event.preventDefault();
-      stroke.push([event.layerX, event.layerY]);
+      stroke.push([event.offsetX, event.offsetY]);
       context.clearRect(0, 0, width, height);
       context.beginPath();
       curve.lineStart();
@@ -369,9 +367,7 @@ const silly = view(
 );
 ```
 
-```js
-silly;
-```
+${silly}
 
 viewOf_defined = The \`viewof\` operator is just shorthand for defining the view and its value in the same cell. You can define them as separate cells if you prefer:`
 
@@ -380,7 +376,7 @@ const explicitView = Inputs.range([0, 100]);
 ```
 
 ```js
-const explicitValue = display(Generators.input(explicitView));
+const explicitValue = (display(explicitView));
 ```
 
 And, just as you can reference _explicitView_ from another cell, you can reference the view defined by `viewof` from another cell, too. For example, you can refer to the value of the view _x_ defined at the top of this notebook:
@@ -417,9 +413,7 @@ const count = view(
 );
 ```
 
-```js
-count;
-```
+${count}
 
 
 As you might have guessed, the reason that HTML input elements work by default as views is that these elements have a value property and they emit *input* events when you interact with them. (There is a little extra logic for dealing with idiosyncrasies; see the [Generators.input](https://github.com/observablehq/stdlib/blob/master/src/generators/input.js) source for details. And actually, a view doesn’t need to be a DOM element; it only needs to support the [EventTarget interface](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget). For an example of a non-element view, see the [Synchronized Inputs](https://observablehq.com/@observablehq/synchronized-inputs?collection=@observablehq/inputs) notebook.)

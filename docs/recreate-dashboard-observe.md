@@ -1,5 +1,7 @@
 # Primary mortgage market survey - Observe
+
 [Source](https://github.com/tututwo/learning-obs-framework/blob/main/docs/recreate-dashboard-observe.md)
+
 <script src="https://cdn.tailwindcss.com"></script>
 
 ```js
@@ -99,16 +101,6 @@ function tickLineChart(width, height, data, key, stroke, xRange) {
 ```
 
 ```js
-//  function tooltipCreator(tooltipData) {
-//   const [hoveredX,hoveredY, data] = tooltipData
-
-//   return html`
-//     <div class="absolute" style=${transform:${hoveredX}px, ${hoveredY}px}>${data.date+wtf()||""}</div>
-//   `
-// }
-```
-
-```js
 function frmCard(y, pmms) {
   const key = `pmms${y}`;
   const diff1 = pmms.at(-1)[key] - pmms.at(-2)[key];
@@ -128,31 +120,22 @@ function frmCard(y, pmms) {
 ```js
 const hoveredXGenerator = Generators.observe((change) => {
   const updatePosition = (event, data) => {
-    change([event.pageX, event.pageY, data]);
+    change([event.offsetX, event.offsetY, data]);
   };
+
   const pointerleave = (event) => {
     if (event.pointerType !== "mouse") return;
-    change([null, null]); // or change([null, null]) depending on how you want to handle this
+    change([null, null, null]); // Set the state to null to hide the tooltip
   };
+
   const attachListeners = () => {
     return new Promise((resolve) => {
       const checkAndAttach = () => {
         const allLineCharts = d3.selectAll(".tick");
-        // wait until all line charts are loaded
-        // you can use settimeout too
-        // Use a small delay to ensure SVG elements are created
-        // setTimeout(() => {
-        //   const allLineCharts = document.querySelectorAll('.line-chart');
-        //   allLineCharts.forEach(chart => {
-        //     chart.addEventListener('pointermove', updatePosition);
-        //   });
-        // }, 100);
+
         if (!allLineCharts.empty()) {
-          allLineCharts.on("pointermove", (event, d) => {
-            console.log(event);
-            return updatePosition(event, d);
-          });
-          // .on("pointerleave", pointerleave);
+          allLineCharts.on("pointermove", (event, d) => updatePosition(event, d));
+          allLineCharts.on("pointerleave", pointerleave);
           resolve();
         } else {
           requestAnimationFrame(checkAndAttach);
@@ -163,42 +146,45 @@ const hoveredXGenerator = Generators.observe((change) => {
   };
 
   attachListeners().then(() => {
-    change([0, 0]); // Initial value
+    change([0, 0, null]); // Initial value
   });
 
   return () => {
     d3.selectAll(".line-chart").on("pointermove", null);
-    // .on("pointerleave", null);
+    d3.selectAll(".line-chart").on("pointerleave", null);
   };
 });
+
 ```
 
-
-
 ```js
-const tooltipCreator = function (tooltipData) {
+function tooltipCreator(tooltipData) {
   const [hoveredX, hoveredY, data] = tooltipData;
-  return html`
-    <div
-      class="absolute t-0 l-0"
-      style="transform: translate(${hoveredX}px, ${hoveredY}px);"
-    >
-      ${data.date || ""}
-    </div>
-  `;
-};
+
+  const visibilityStyle = (hoveredX === null || hoveredY === null || data === null)
+    ? 'display: none;'
+    : `transform: translate(${hoveredX}px, ${hoveredY}px);`;
+
+  return html`<div
+    class="absolute t-0 l-0"
+    style="${visibilityStyle}"
+  >
+    ${data?.date ?? ""}
+  </div>`;
+}
+
 ```
 
 <div class="grid grid-cols-3 grid-rows-4 gap-4">
-  <div class="card col-start-1 row-start-1 relative">${frmCard(30, pmms)}</div>
+  <div class="card col-start-1 row-start-1 relative">${frmCard(30, pmms)}  ${tooltipCreator(hoveredXGenerator)}</div>
   <div class="card col-start-1 row-start-2 relative">
     ${frmCard(15, pmms)} ${tooltipCreator(hoveredXGenerator)}
   </div>
   <div class="col-span-2 row-span-2 col-start-2 row-start-1">
-    ${resize((width, height) => {})}
+
   </div>
   <div class="col-span-3 row-span-3 col-start-1 row-start-3">
-    ${tooltipCreator(hoveredXGenerator)}
+   
   </div>
 </div>
 

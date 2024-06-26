@@ -6,15 +6,20 @@ export default {
   // The pages and sections in the sidebar. If you don’t specify this option,
   // all pages will be listed in alphabetical order. Listing pages explicitly
   // lets you organize them into sections and have unlisted pages.
-  // pages: [
-  //   {
-  //     name: "Examples",
-  //     pages: [
-  //       {name: "Dashboard", path: "/example-dashboard"},
-  //       {name: "Report", path: "/example-report"}
-  //     ]
-  //   }
-  // ],
+  pages: [
+    {name: "GSAP Demo", path: "/gsap-demo"},
+    {name: "Views", path: "/views"},
+    {
+      name: "Examples",
+      open:false,
+      pages: [
+        { name: "Dashboard", path: "/example-dashboard" },
+        { name: "Report", path: "/example-report" },
+      ],
+      // pager: "inputs",
+    },
+    
+  ],
 
   // Some additional configuration options and their defaults:
   theme: "light", // try "light", "dark", "slate", etc.
@@ -22,7 +27,7 @@ export default {
   // footer: "Built with Observable.", // what to show in the footer (HTML)
   // toc: true, // whether to show the table of contents
   // pager: true, // whether to show previous & next links in the footer
-  // root: "docs", // path to the source root for preview
+  root: "docs", // path to the source root for preview
   // output: "dist", // path to the output root for build
   // search: true, // activate search
 };

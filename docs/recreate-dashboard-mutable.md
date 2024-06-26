@@ -1,5 +1,7 @@
 # Primary mortgage market survey - Mutable
+
 [Source](https://github.com/tututwo/learning-obs-framework/blob/main/docs/recreate-dashboard-mutable.md)
+
 <script src="https://cdn.tailwindcss.com"></script>
 
 ```js
@@ -68,32 +70,6 @@ function tickLineChart(width, height, data, key, stroke, xRange) {
     .attr("stroke", "black")
     .attr("stroke-width", 2);
 
-  // Create tooltip
-  // const tooltip = d3
-  //   .select("body")
-  //   .append("div")
-  //   .attr("class", "tooltip")
-  //   .style("position", "absolute")
-  //   .style("background", "#fff")
-  //   .style("border", "1px solid #ccc")
-  //   .style("padding", "5px")
-  //   .style("pointer-events", "none")
-  //   .style("opacity", 0);
-
-  // Add tooltip functionality
-  // svg
-  //   .selectAll(".tick")
-
-  //   .on("mouseover", function (event, d) {
-  //     tooltip.transition().duration(200).style("opacity", 0.9);
-  //     tooltip
-  //       .html(`${d.date.toLocaleDateString("en-US")}: ${d[key]}%`)
-  //       .style("left", event.pageX + 5 + "px")
-  //       .style("top", event.pageY - 28 + "px");
-  //   })
-  //   .on("mouseout", function (d) {
-  //     tooltip.transition().duration(500).style("opacity", 0);
-  //   });
   return svg.node();
 }
 ```
@@ -123,20 +99,12 @@ const hoveredStateSetter = (value) => {
 ```
 
 ```js
-
-```
-
-```js
 function attachMouseListeners() {
   d3.selectAll(".tick").each(function () {
     d3.select(this).on("pointermove", function (event, d) {
       // Update the Mutable state with new data
       hoveredStateSetter([event.pageX, event.pageY, d]);
     });
-    // .on("pointerleave", function () {
-    //   // Reset the Mutable state when the mouse leaves
-    //   hoveredStateSetter(null);
-    // });
   });
 }
 
