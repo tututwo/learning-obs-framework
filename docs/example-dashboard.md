@@ -10,12 +10,9 @@ toc: false
 
 ```js
 const launches = FileAttachment("data/launches.csv").csv({typed: true});
-const aapl = FileAttachment("data/aapl.csv").csv({typed: true});
-const penguin = FileAttachment("data/penguins.csv").csv({typed: true});
+
 ```
-```js
-console.log(penguin)
-```
+
 <!-- A shared color scale for consistency, sorted by the number of launches -->
 
 ```js
