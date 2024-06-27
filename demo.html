@@ -1,0 +1,52 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body >
+    <script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <section id="index-barba" data-barba="wrapper">
+      <div class="hero" data-barba="container">
+        <h1>Hello, Observable Framework</h1>
+      </div>
+    </section>
+
+    <script>
+      const animationEnter = (container) => {
+        return gsap.from(container, {
+          autoAlpha: 0,
+          duration: 4,
+          clearProps: "all",
+          ease: "none",
+        });
+      };
+
+      const animationLeave = (container) => {
+        return gsap.to(container, {
+          autoAlpha: 0,
+          duration: 2,
+          clearProps: "all",
+          ease: "none",
+        });
+      };
+
+      barba.init({
+        transitions: [
+          {
+            once({ next }) {
+              animationEnter(next.container);
+            },
+            enter({ next }) {
+              animationEnter(next.container);
+            },
+            leave({ next }) {
+              animationLeave(next.container);
+            },
+          },
+        ],
+      });
+    </script>
+  </body>
+</html>
